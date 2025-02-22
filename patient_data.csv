@@ -1,0 +1,101 @@
+patient_id,name,age,gender,weight,past-history,blood-group
+1,Aditi,33,Male,97,Thyroid Disorder,AB+
+2,Shivam,69,Female,83,Skin Allergy,AB+
+3,Karan,79,Male,58,Thyroid Disorder,A+
+4,Ishita,68,Male,71,None,O+
+5,Tanvi,66,Male,53,Hypertension,O+
+6,Sanya,61,Female,89,Tuberculosis,B+
+7,Krishna,36,Female,46,Dengue,A+
+8,Ishita,20,Male,52,Pneumonia,A+
+9,Priya,42,Female,99,Malaria,A-
+10,Aarav,35,Female,81,Hernia,O+
+11,Rohan,49,Female,55,Skin Allergy,B-
+12,Neha,40,Male,78,Tuberculosis,A+
+13,Vivaan,39,Male,95,None,AB+
+14,Vivaan,71,Male,48,Migraine,AB+
+15,Tanvi,33,Male,56,Migraine,AB-
+16,Arjun,76,Female,96,None,AB-
+17,Sneha,68,Male,45,Diabetes,A-
+18,Ishita,77,Male,99,Hepatitis B,A+
+19,Ishita,35,Female,96,Hernia,B+
+20,Riya,71,Female,46,Migraine,B-
+21,Ananya,30,Male,77,Dengue,O+
+22,Aditi,76,Female,100,Hernia,O-
+23,Aarav,19,Female,66,Pneumonia,O-
+24,Kabir,72,Male,72,Malaria,AB-
+25,Ishita,61,Male,97,Skin Allergy,B-
+26,Sneha,60,Male,96,Hernia,A+
+27,Ishita,18,Female,49,Malaria,O-
+28,Krishna,38,Female,48,Pneumonia,A+
+29,Aditya,64,Male,79,Hepatitis B,B+
+30,Riya,51,Female,62,Skin Allergy,O-
+31,Sanya,29,Male,51,Asthma,A-
+32,Vivaan,68,Female,64,Pneumonia,A-
+33,Krishna,27,Female,63,Malaria,O-
+34,Sai,80,Female,84,Pneumonia,A+
+35,Aarav,56,Female,68,Jaundice,A+
+36,Rohan,23,Female,73,Hypertension,AB+
+37,Aditi,57,Female,47,Arthritis,O+
+38,Rohan,65,Male,45,Diabetes,AB-
+39,Arjun,18,Female,71,Hernia,A+
+40,Riya,41,Female,100,Pneumonia,AB+
+41,Krishna,52,Female,54,Kidney Stones,O+
+42,Sai,52,Female,76,None,O-
+43,Krishna,37,Male,68,Hepatitis B,AB+
+44,Aarav,25,Male,86,Jaundice,AB+
+45,Kabir,29,Female,58,Thyroid Disorder,A-
+46,Rohan,33,Female,51,Thyroid Disorder,AB+
+47,Shivam,61,Female,92,Migraine,O+
+48,Riya,76,Male,62,Arthritis,B+
+49,Vivaan,26,Male,81,Typhoid,A+
+50,Riya,53,Male,45,Arthritis,O-
+51,Shivam,36,Male,94,Asthma,O+
+52,Arjun,48,Male,98,Pneumonia,O+
+53,Sneha,55,Female,55,Hepatitis B,AB-
+54,Shivam,54,Male,70,Arthritis,O-
+55,Kabir,72,Male,99,Hernia,B+
+56,Sneha,26,Female,83,Tuberculosis,B-
+57,Sneha,71,Male,64,Typhoid,O+
+58,Sanya,44,Male,65,Pneumonia,B-
+59,Aditya,67,Female,94,Anemia,AB-
+60,Sai,24,Female,88,Kidney Stones,A+
+61,Riya,28,Male,92,Arthritis,O-
+62,Ishita,33,Male,96,Tuberculosis,A-
+63,Riya,50,Male,94,Hernia,O+
+64,Aditya,42,Male,54,Hernia,O+
+65,Sanya,18,Female,55,Hernia,B+
+66,Aditi,30,Male,72,Hepatitis B,AB+
+67,Arjun,29,Male,50,Thyroid Disorder,AB-
+68,Shivam,55,Male,89,Migraine,O+
+69,Rohan,39,Male,85,Dengue,A+
+70,Karan,67,Female,88,None,O-
+71,Arjun,69,Male,68,Sinusitis,O+
+72,Krishna,45,Female,87,Hernia,O+
+73,Aarav,57,Female,63,Pneumonia,AB-
+74,Arjun,28,Male,66,Hernia,B-
+75,Ishita,55,Female,50,Asthma,B+
+76,Ananya,66,Female,72,Arthritis,AB+
+77,Krishna,74,Male,81,Asthma,A-
+78,Krishna,20,Male,90,Asthma,O+
+79,Sanya,76,Female,98,Asthma,B-
+80,Riya,28,Male,100,Typhoid,AB+
+81,Kabir,25,Male,83,Tuberculosis,B-
+82,Ananya,40,Female,45,Hepatitis B,B-
+83,Kabir,42,Female,45,Typhoid,A+
+84,Vivaan,76,Female,79,Pneumonia,B-
+85,Riya,33,Female,77,Dengue,O-
+86,Sanya,55,Female,56,Tuberculosis,AB-
+87,Krishna,31,Male,74,Hypertension,A+
+88,Shivam,43,Male,53,Typhoid,O-
+89,Aditi,63,Male,71,Asthma,A-
+90,Neha,64,Female,84,Diabetes,O-
+91,Shivam,36,Male,80,Diabetes,A+
+92,Ishita,66,Male,49,Jaundice,O-
+93,Tanvi,78,Female,88,Jaundice,A+
+94,Sai,27,Female,85,Kidney Stones,B+
+95,Karan,38,Male,58,Malaria,O+
+96,Aditi,80,Female,68,Kidney Stones,O+
+97,Ananya,47,Male,75,Tuberculosis,A-
+98,Arjun,54,Male,79,Thyroid Disorder,AB+
+99,Neha,76,Female,51,Sinusitis,A+
+100,Priya,37,Female,52,Hernia,O-
