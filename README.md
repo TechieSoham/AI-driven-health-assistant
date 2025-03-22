@@ -22,6 +22,11 @@ AI-powered chatbot for personalized health insights based on patient data. Built
 ---
 
 ## 🔧 Installation & Setup
+
+```sh
+ollama run deepseek-r1:1.5b
+```
+
 ### 1️⃣ Clone the Repository
 ```sh
 git clone https://github.com/your-username/AI-driven-health-assistant.git
