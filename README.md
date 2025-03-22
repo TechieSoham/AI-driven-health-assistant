@@ -23,13 +23,21 @@ AI-powered chatbot for personalized health insights based on patient data. Built
 
 ## 🔧 Installation & Setup
 
+#Install Integrated Health Mangement Software:
+```sh
+git clone https://github.com/Aayush7g/Health-Management-System
+```
+for more visit here- 
+This chatbot is integrated in pur Health Management app to provide functionality like nearby hospital , doctor-patient dashboard, appointment booking,mysql database connection and many more.
+Follow above directory for Complete Web App .
+
 ```sh
 ollama run deepseek-r1:1.5b
 ```
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/your-username/AI-driven-health-assistant.git
+git clone https://github.com/TechieSoham/AI-driven-health-assistant.git
 cd AI-driven-health-assistant
 ```
 2️⃣ Install Dependencies
