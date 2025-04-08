@@ -11,16 +11,39 @@
     <!-- Navbar -->
     <nav class="bg-blue-600 text-white shadow-lg">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
             <a href="#" class="text-xl font-bold flex items-center">
                 <i class="fas fa-heartbeat mr-2"></i>
                 Health Management System
             </a>
-            <div class="space-x-3">
+    
+            <!-- Hamburger (Mobile) -->
+            <button class="lg:hidden text-white focus:outline-none" onclick="toggleMenu()">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+    
+            <!-- Desktop Links -->
+            <div id="navLinks" class="hidden lg:flex space-x-3">
                 <a href="{{ url_for('doctor_login') }}" class="px-4 py-2 rounded border border-white hover:bg-white hover:text-blue-600 transition duration-300">Doctor Login</a>
                 <a href="{{ url_for('patient_login') }}" class="px-4 py-2 rounded bg-white text-blue-600 hover:bg-blue-100 transition duration-300">Patient Login</a>
             </div>
         </div>
+    
+        <!-- Mobile Links -->
+        <div id="mobileNav" class="lg:hidden hidden flex-col space-y-2 px-4 pb-4">
+            <a href="{{ url_for('doctor_login') }}" class="block px-4 py-2 rounded border border-white hover:bg-white hover:text-blue-600 transition duration-300">Doctor Login</a>
+            <a href="{{ url_for('patient_login') }}" class="block px-4 py-2 rounded bg-white text-blue-600 hover:bg-blue-100 transition duration-300">Patient Login</a>
+        </div>
     </nav>
+    
+    <!-- Toggle Script -->
+    <script>
+        function toggleMenu() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('hidden');
+        }
+    </script>
+    
 
     <a href="http://localhost:8501" target="_blank" 
    class="fixed bottom-6 right-6 flex items-center justify-center w-16 h-16 rounded-full bg-green-600 text-white shadow-2xl hover:bg-green-700 transition duration-300 animate-bounce">

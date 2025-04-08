@@ -95,36 +95,42 @@
                     {% endfor %}
                 </select>
             </div>
+        
             <div class="mb-3">
                 <label for="appointment_date" class="form-label">Appointment Date:</label>
                 <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control" required>
             </div>
-            
+        
+            <div class="mb-3">
+                <label class="form-label">Do you give consent to view your medical records?</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="isconsent" id="consent_yes" value="true">
+                    <label class="form-check-label" for="consent_yes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="isconsent" id="consent_no" value="false" checked>
+                    <label class="form-check-label" for="consent_no">No</label>
+                </div>
+            </div>
+        
             <script>
-                // Function to set min attribute dynamically
                 function setMinDateTime() {
                     let now = new Date();
-                    
-                    // Format the date and time as 'YYYY-MM-DDTHH:MM' (required for datetime-local input)
                     let year = now.getFullYear();
                     let month = String(now.getMonth() + 1).padStart(2, '0');
                     let day = String(now.getDate()).padStart(2, '0');
                     let hours = String(now.getHours()).padStart(2, '0');
                     let minutes = String(now.getMinutes()).padStart(2, '0');
-            
+        
                     let minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
-            
-                    // Set min attribute to prevent past selections
                     document.getElementById('appointment_date').setAttribute('min', minDateTime);
                 }
-            
-                // Set minDateTime on page load
                 setMinDateTime();
             </script>
-            
+        
             <button type="submit" class="bg-blue-200 text-black px-4 py-2 rounded">Book Appointment</button>
-
         </form>
+        
 
         <!-- Medical Records Section -->
         <h2 class="my-4 text-2xl font-bold-100">Your Medical Records</h2>
@@ -133,40 +139,52 @@
 
     
         
-        <div class="container" class="card" style="width: 68rem; display: flex; flex-wrap: wrap;">
+        <div class="container card" style="width: 68rem; display: flex; flex-wrap: wrap;">
             <div class="row">
                 {% for record in medical_records %}
                 <div class="col-md-6">
-                    <div class="medical-card">
+                    <div class="medical-card border rounded p-3 mb-4 bg-light">
                         <strong>Date:</strong> {{ record.record_date }}<br>
                         <strong>Diagnosis:</strong> {{ record.diagnosis }}<br>
                         <strong>Prescription:</strong> {{ record.prescription }}<br>
                         <strong>Notes:</strong> {{ record.notes }}<br>
         
-                        <!-- File Icons with Click Event -->
+                        <!-- File Buttons -->
                         {% if record.image_data %}
                         <a href="#" onclick="openModal('{{ url_for('get_medical_image', image_type='image_data', record_id=record.record_id) }}', 'Image')">
-                            <button style="font-size:10px;border-radius:10px;height:2rem">View Image <i class="fa fa-file-image-o" style="font-size:14px;color:blue"></i></button>
+                            <button class="btn btn-sm btn-outline-primary mt-1">View Image <i class="fa fa-file-image-o"></i></button>
                         </a>
                         {% endif %}
-                        
+        
                         {% if record.x_ray_image %}
                         <a href="#" onclick="openModal('{{ url_for('get_medical_image', image_type='x_ray_image', record_id=record.record_id) }}', 'X-Ray')">
-                            <button style="font-size:10px;border-radius:10px;height:2rem">View X-Ray <i class="fa fa-file-image-o" style="font-size:14px;color:blue"></i></button>
+                            <button class="btn btn-sm btn-outline-primary mt-1">View X-Ray <i class="fa fa-file-image-o"></i></button>
                         </a>
                         {% endif %}
-                        
+        
                         {% if record.lab_report %}
                         <a href="#" onclick="openModal('{{ url_for('get_medical_image', image_type='lab_report', record_id=record.record_id) }}', 'Lab Report')">
-                            <button style="font-size:10px;border-radius:10px;height:2rem">View Lab Report <i class="fa fa-file-pdf-o" style="font-size:14px;color:red;"></i></button>
+                            <button class="btn btn-sm btn-outline-danger mt-1">View Lab Report <i class="fa fa-file-pdf-o"></i></button>
                         </a>
                         {% endif %}
+        
+                        <!-- Toggle Consent Button -->
+                        <form method="POST" action="{{ url_for('toggle_consent', record_id=record.record_id) }}" class="mt-3">
+                            {% if record.consent == 'sensitive' %}
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                    Mark as Un-Sensitive <i class="fa fa-unlock"></i>
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-sm btn-warning">
+                                    Mark as Sensitive <i class="fa fa-lock"></i>
+                                </button>
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
-        
         
         <!-- Modal Popup -->
         <div id="imageModal" class="modal">
@@ -178,7 +196,7 @@
         
         <!-- CSS for Modal -->
         <style>
-            .modal {
+            .modal {    
                 display: none;
                 position: fixed;
                 z-index: 1000;

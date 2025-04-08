@@ -79,21 +79,25 @@
                              style="width: 100px; height: 100px; border-radius: 50%;"
                              onerror="this.onerror=null; this.src='/path/to/default-image.jpg';"> 
                     </div>
-
+            
                     <div class="appointment-item ml-4">
                         <strong id="show">Appointment ID:</strong> {{ appointment['appointment_id'] }}<br>
                         <strong id="show">Patient ID:</strong> {{ appointment['patient_id'] }}<br>
                         <strong id="show">Date:</strong> {{ appointment['appointment_date'] }}<br>
-                    </div>                  
-
-                    <div>
+                    </div>
+            
+                    <div class="ml-4 flex flex-col space-y-2">
                         <a href="{{ url_for('add_medical_record_form', patient_id=appointment['patient_id']) }}">
                             <button type="button" class="btn btn-primary">Add Medical Record</button>
+                        </a>
+                        <a href="{{ url_for('view_medical_records', patient_id=appointment['patient_id'], appointment_id=appointment['appointment_id']) }}" target="_blank">
+                            <button type="button" class="btn btn-secondary">View Medical Records</button>
                         </a>
                     </div>
                 </div>
                 {% endfor %}    
             </div>
+            
         </div>
 
         <h2 class="text-2xl font-bold text-gray-800 mb-6 mt-8 px-4 text-white">Medical Records of Your Patients</h2>

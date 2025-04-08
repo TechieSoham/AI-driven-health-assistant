@@ -1,4 +1,4 @@
-//pip install mysql-connector-python faiss-cpu sentence-transformers
+# pip install mysql-connector-python faiss-cpu sentence-transformers
 
 import streamlit as st
 from langchain_ollama import ChatOllama

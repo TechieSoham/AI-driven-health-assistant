@@ -148,6 +148,30 @@ def doctor_dashboard():
 
     return render_template('doctor_dashboard.html', doctor_name=doctor, appointments=appointments)
 
+@app.route('/view_medical_records/<int:patient_id>/<int:appointment_id>')
+def view_medical_records(patient_id, appointment_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Get consent value from the appointment
+    cursor.execute("SELECT isconsent FROM appointments WHERE appointment_id = %s", (appointment_id,))
+    result = cursor.fetchone()
+
+    if result and result['isconsent']:
+        # Patient gave consent → fetch all records
+        cursor.execute("SELECT * FROM medical_records WHERE patient_id = %s", (patient_id,))
+    else:
+        # No consent → fetch only general type records
+        cursor.execute("SELECT * FROM medical_records WHERE patient_id = %s AND consent = 'general'", (patient_id,))
+
+    medical_records = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('view_medical_records.html', medical_records=medical_records)
+
+
 # Patient dashboard route
 @app.route('/patient/dashboard')
 def patient_dashboard():
@@ -163,24 +187,61 @@ def patient_dashboard():
     conn.close()
     return render_template('patient_dashboard.html', doctors=doctors, medical_records=medical_records)
 
+@app.route('/toggle_consent/<int:record_id>', methods=['POST'])
+def toggle_consent(record_id):
+    if 'user_id' not in session or session['role'] != 'patient':
+        return redirect(url_for('home'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Get current consent value
+    cursor.execute('SELECT consent FROM medical_records WHERE record_id = %s AND patient_id = %s',
+                   (record_id, session['user_id']))
+    record = cursor.fetchone()
+
+    if not record:
+        flash('Record not found or unauthorized.', 'danger')
+        return redirect(url_for('patient_dashboard'))
+
+    new_consent = 'general' if record['consent'] == 'sensitive' else 'sensitive'
+
+    # Update the consent
+    cursor.execute('UPDATE medical_records SET consent = %s WHERE record_id = %s',
+                   (new_consent, record_id))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    flash(f'Medical record marked as {new_consent}.', 'success')
+    return redirect(url_for('patient_dashboard'))
+
+
 # Book appointment route
 @app.route('/book_appointment', methods=['POST'])
 def book_appointment():
     if 'user_id' not in session or session['role'] != 'patient':
         return redirect(url_for('home'))
+
     doctor_id = request.form.get('doctor_id')
     appointment_date = request.form.get('appointment_date')
+    isconsent = request.form.get('isconsent', 'false')  # Default to 'false' if not selected
+    isconsent_bool = isconsent.lower() == 'true'        # Convert to boolean
+
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO appointments (patient_id, doctor_id, appointment_date)
-        VALUES (%s, %s, %s)
-    ''', (session['user_id'], doctor_id, appointment_date))
+        INSERT INTO appointments (patient_id, doctor_id, appointment_date, isconsent)
+        VALUES (%s, %s, %s, %s)
+    ''', (session['user_id'], doctor_id, appointment_date, isconsent_bool))
+
     conn.commit()
     cursor.close()
     conn.close()
+
     flash('Appointment booked successfully!', 'success')
     return redirect(url_for('patient_dashboard'))
+
 
 @app.route('/add_medical_record_form/<int:patient_id>')
 def add_medical_record_form(patient_id):
@@ -273,7 +334,6 @@ def get_medical_image(image_type, record_id):
 
 
 from flask import Response
-
 @app.route('/profile_picture/<int:patient_id>')
 def get_profile_picture(patient_id):
     # Connect to the database
@@ -324,5 +384,15 @@ def logout():
     session.pop('role', None)
     return redirect(url_for('home'))
 
+import socket
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Get the local IP address of the machine
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+
+    print("\n🚀 Flask app running!")
+    print(f"👉 Local:    http://127.0.0.1:5000")
+    print(f"👉 Network:  http://{local_ip}:5000\n")
+
+    app.run(debug=True, host='0.0.0.0', port=5000)
