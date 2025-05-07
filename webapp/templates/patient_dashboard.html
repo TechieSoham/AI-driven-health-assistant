@@ -77,10 +77,15 @@
 
 
 <body class="bg-gradient-to-r from-blue-100 to-violet-100">
-    <nav class="flex justify-between items-center p-4 bg-white-600 text-blue navbar fixed-top bg-body-tertiary ">
-        <h1 class="text-4xl font-bold " style="font-family: Verdana, sans-serif;">Patient Dashboard </h1>
-         <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
-    </nav>  
+    <nav class="flex justify-between items-center px-6 py-4 bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <h1 class="text-2xl md:text-3xl font-bold text-blue-700" style="font-family: Verdana, sans-serif;">
+          Patient Dashboard
+        </h1>
+        <a href="{{ url_for('logout') }}" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
+          Logout
+        </a>
+      </nav>
+      
     <div class="container">
         <h1 class="my-4 mb-10"> Patient</h1>
 

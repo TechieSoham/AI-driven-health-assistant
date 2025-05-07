@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
     <style>
         #show{
             font-size: 15px;
@@ -65,40 +67,100 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-r from-blue-500 to-purple-500">
-    <div class="container">
+<body class="">
+    <nav class="bg-white border-b shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+          <!-- Logo -->
+          <h1 class="text-xl md:text-2xl font-bold text-blue-700" style="font-family: Verdana, sans-serif;">
+            Doctor Dashboard
+          </h1>
+      
+          <!-- Hamburger Icon -->
+          <button data-collapse-toggle="navbar-default" type="button"
+            class="inline-flex items-center p-2 text-gray-600 rounded-md md:hidden hover:bg-gray-100 focus:outline-none"
+            aria-controls="navbar-default" aria-expanded="false">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+      
+          <!-- Nav Links -->
+          <div class="hidden md:flex items-center space-x-4" id="navbar-default">
+            <a href="{{ url_for('logout') }}"
+              class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-md transition">
+              Logout
+            </a>
+          </div>
+        </div>
+      </nav>
+      
+    <div class="container mt-11">
         <h1 class="bold text-black-500 pt-10 ">Welcome, Dr {{ doctor_name.screen_name }}</h1>
         <h2 class="text-black bold">Your Appointments</h2>
-        <div class="doctor-dashboard">
-            <div class="appointments-list flex flex-wrap space-x-4 space-y-4">
-                {% for appointment in appointments %}
-                <div id="box" class="appointment-item flex bg-blue rounded-lg shadow-md border border-gray-200 p-6 transition-all hover:shadow-lg" onclick="changeBackgroundColor(this)">
-                    <div>
-                        <img src="{{ url_for('get_profile_picture', patient_id=appointment['patient_id']) }}" 
-                             alt="Profile Picture" 
-                             style="width: 100px; height: 100px; border-radius: 50%;"
-                             onerror="this.onerror=null; this.src='/path/to/default-image.jpg';"> 
-                    </div>
-            
-                    <div class="appointment-item ml-4">
-                        <strong id="show">Appointment ID:</strong> {{ appointment['appointment_id'] }}<br>
-                        <strong id="show">Patient ID:</strong> {{ appointment['patient_id'] }}<br>
-                        <strong id="show">Date:</strong> {{ appointment['appointment_date'] }}<br>
-                    </div>
-            
-                    <div class="ml-4 flex flex-col space-y-2">
-                        <a href="{{ url_for('add_medical_record_form', patient_id=appointment['patient_id']) }}">
-                            <button type="button" class="btn btn-primary">Add Medical Record</button>
-                        </a>
-                        <a href="{{ url_for('view_medical_records', patient_id=appointment['patient_id'], appointment_id=appointment['appointment_id']) }}" target="_blank">
-                            <button type="button" class="btn btn-secondary">View Medical Records</button>
-                        </a>
-                    </div>
+        <div class="doctor-dashboard p-4">
+            <div id="appointmentsContainer" class="appointments-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {% for appointment in appointments %}
+              <div data-appointment class="hidden appointment-item flex flex-col sm:flex-row items-center bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                <img src="{{ url_for('get_profile_picture', patient_id=appointment['patient_id']) }}"
+                     alt="Profile Picture"
+                     class="w-24 h-24 rounded-full object-cover mb-4 sm:mb-0 sm:mr-6"
+                     onerror="this.onerror=null; this.src='/path/to/default-image.jpg';">
+                <div class="flex-1 text-gray-700">
+                  <p><span class="font-semibold">Appointment ID:</span> {{ appointment['appointment_id'] }}</p>
+                  <p><span class="font-semibold">Patient ID:</span> {{ appointment['patient_id'] }}</p>
+                  <p><span class="font-semibold">Date:</span> {{ appointment['appointment_date'] }}</p>
                 </div>
-                {% endfor %}    
+                <div class="flex flex-col space-y-2 mt-4 sm:mt-0 sm:ml-4">
+                  <a href="{{ url_for('add_medical_record_form', patient_id=appointment['patient_id']) }}">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                      Add Medical Record
+                    </button>
+                  </a>
+                  <a href="{{ url_for('view_medical_records', patient_id=appointment['patient_id'], appointment_id=appointment['appointment_id']) }}" target="_blank">
+                    <button type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
+                      View Medical Records
+                    </button>
+                  </a>
+                </div>
+              </div>
+              {% endfor %}
             </div>
-            
-        </div>
+          
+            <div class="text-center mt-6">
+              <button id="loadMoreBtn"
+                      class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md text-sm font-medium">
+                Load More
+              </button>
+            </div>
+          </div>
+          <script>
+            const loadLimit = 6;
+            let visibleCount = 0;
+          
+            const items = document.querySelectorAll('[data-appointment]');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+          
+            function showNextBatch() {
+              let shown = 0;
+              for (let i = visibleCount; i < items.length && shown < loadLimit; i++) {
+                items[i].classList.remove('hidden');
+                visibleCount++;
+                shown++;
+              }
+          
+              if (visibleCount >= items.length) {
+                loadMoreBtn.classList.add('hidden');
+              }
+            }
+          
+            loadMoreBtn.addEventListener('click', showNextBatch);
+          
+            // Show first batch on load
+            window.addEventListener('DOMContentLoaded', showNextBatch);
+          </script>
+          
+          
 
         <h2 class="text-2xl font-bold text-gray-800 mb-6 mt-8 px-4 text-white">Medical Records of Your Patients</h2>
         <div class="space-y-4 px-4">
@@ -132,35 +194,50 @@
         </div>
 
         <!-- Add Medical Record Form -->
-        <h2 class="my-5 text-black">Add Medical Record</h2>
-        <form action="{{ url_for('add_medical_record') }}" method="POST" class="card p-4" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="patient_id" class="form-label">Patient ID:</label>
-                <input type="text" name="patient_id" id="patient_id" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="diagnosis" class="form-label">Diagnosis:</label>
-                <textarea name="diagnosis" id="diagnosis" class="form-control" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="prescription" class="form-label">Prescription:</label>
-                <textarea name="prescription" id="prescription" class="form-control" required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="notes" class="form-label">Notes:</label>
-                <textarea name="notes" id="notes" class="form-control"></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Upload Medical Image:</label>
-                <input type="file" name="image" id="image" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Add Record</button>
-        </form>
-
-        <!-- Logout Button -->
-        <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
-    </div>
+        <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Add Medical Record</h2>
+          
+            <form action="{{ url_for('add_medical_record') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+              
+              <div>
+                <label for="patient_id" class="block text-sm font-medium text-gray-700 mb-1">Patient ID</label>
+                <input type="text" name="patient_id" id="patient_id" required
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+          
+              <div>
+                <label for="diagnosis" class="block text-sm font-medium text-gray-700 mb-1">Diagnosis</label>
+                <textarea name="diagnosis" id="diagnosis" required rows="3"
+                          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+              </div>
+          
+              <div>
+                <label for="prescription" class="block text-sm font-medium text-gray-700 mb-1">Prescription</label>
+                <textarea name="prescription" id="prescription" required rows="3"
+                          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+              </div>
+          
+              <div>
+                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                <textarea name="notes" id="notes" rows="3"
+                          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+              </div>
+          
+              <div>
+                <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Upload Medical Image</label>
+                <input type="file" name="image" id="image"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+              </div>
+          
+              <div class="pt-4">
+                <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                  Add Record
+                </button>
+              </div>
+            </form>
+          </div>
+          
 
     <script>
         // Function to change the background color when clicked
