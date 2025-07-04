@@ -15,7 +15,7 @@ AI-powered chatbot for personalized health insights based on patient data. Built
 
 ## 🛠️ Tech Stack
 - **Frontend**: Streamlit
-- **Backend**: LangChain, Ollama
+- **Backend**: LangChain , Ollama
 - **Model**: DeepSeek LLM
 - **Database**: CSV (Patient Data)
 
